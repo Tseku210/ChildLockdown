@@ -1,0 +1,4 @@
+Logs/
+Installers/
+*.bak
+*.bak[0-9]
