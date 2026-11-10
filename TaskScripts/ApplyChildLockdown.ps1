@@ -99,6 +99,22 @@ $Config = @{
       # AppxMatch above is what resolves its real exe name from the package manifest.
       # Only the autostart app is ever launched by path, so leave this empty.
       PathCandidates = @()
+    },
+    @{
+      Name           = 'Steam'
+      ExeNames       = @('steam.exe')
+      ShortcutMatch  = '(?i)^steam$'
+      AppxMatch      = $null
+      PathCandidates = @("${env:ProgramFiles(x86)}\Steam\steam.exe")
+    },
+    @{
+      # The Steam version. Its shortcuts are steam:// .url files, so they are kept by
+      # name (ShortcutMatch) rather than by target exe.
+      Name           = 'Microsoft Flight Simulator'
+      ExeNames       = @('FlightSimulator.exe', 'FlightSimulator2024.exe')
+      ShortcutMatch  = '(?i)flight\s*simulator'
+      AppxMatch      = $null
+      PathCandidates = @()
     }
   )
 
@@ -154,7 +170,9 @@ $Config = @{
     # Remote access - a child inviting someone else onto the machine.
     'mstsc.exe', 'teamviewer.exe', 'anydesk.exe', 'vncviewer.exe', 'quickassist.exe',
     # Games, game stores and chat. These are the ones that actually get installed.
-    'steam.exe', 'epicgameslauncher.exe', 'robloxplayerbeta.exe',
+    # steam.exe is deliberately NOT here: Steam is allowed so the child can play
+    # Microsoft Flight Simulator (Steam version). See AllowedApps.
+    'epicgameslauncher.exe', 'robloxplayerbeta.exe',
     'robloxplayerlauncher.exe', 'discord.exe', 'minecraft.exe',
     'minecraftlauncher.exe', 'battle.net.exe', 'galaxyclient.exe', 'itch.exe',
     'xboxapp.exe', 'gamebar.exe',
@@ -187,6 +205,7 @@ $Config = @{
   ChildKeptShortcutPatterns = @(
     '(?i)chrome',                                   # the browser they use
     '(?i)(time\s*back|alpha)',                      # Alpha TimeBack
+    '(?i)^steam$', '(?i)flight\s*simulator',        # Steam and Flight Simulator
     '(?i)^settings', '(?i)file\s*explorer',         # the shell itself
     '(?i)(calculator|notepad|paint|camera|photos|snip)',  # ordinary schoolwork tools
     '(?i)(magnif|narrator|on-screen|voice\s*access|live\s*caption|accessibility)'
